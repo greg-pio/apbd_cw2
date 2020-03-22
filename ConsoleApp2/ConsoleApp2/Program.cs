@@ -66,7 +66,7 @@ namespace ConsoleApp2
                     XmlSerializer serializer = new XmlSerializer(typeof(List<Student>),
                                                new XmlRootAttribute("uczelnia"));
                     serializer.Serialize(writer, list);
-                    serializer.Serialize(writer, list);
+                    //serializer.Serialize(writer, list);
                 }
             } catch (ArgumentException e)
             {
