@@ -49,8 +49,15 @@ namespace ConsoleApp2
                         var st = new Student
                         {
                             Imie = kolumny[0],
-                            Nazwisko = kolumny[1]
-                        };
+                            Nazwisko = kolumny[1],
+                            Studia = kolumny[2],
+                            Typ = kolumny[3],
+                            Index = kolumny[4],
+                            Data_urodzenia = kolumny[5],
+                            EMail = kolumny[6],
+                            ImieMatki = kolumny[7],
+                            ImieOjca = kolumny[8]
+                        };                       
                         list.Add(st);
                     }
                     stream.Dispose();
