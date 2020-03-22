@@ -46,40 +46,30 @@ namespace ConsoleApp2
                     while ((line = stream.ReadLine()) != null)
                     {
                         string[] kolumny = line.Split(',');
-                        int pos = Array.IndexOf(kolumny, null);
 
-                        if (kolumny.Length != 9 || pos > -1)
+                        var st = new Student
                         {
-                            using (StreamWriter sw = File.AppendText(logpath))
-                            {
-                                Log("Blad. Pomijam studenta: " + kolumny[4], sw);
-                            }
-                        }
-                        else
-                        {
-                            var st = new Student
-                            {
-                                Imie = kolumny[0],
-                                Nazwisko = kolumny[1],
-                                Studia = kolumny[2],
-                                Typ = kolumny[3],
-                                Index = kolumny[4],
-                                Data_urodzenia = kolumny[5],
-                                EMail = kolumny[6],
-                                ImieMatki = kolumny[7],
-                                ImieOjca = kolumny[8]
-                            };
-                            list.Add(st);
+                            Imie = kolumny[0],
+                            Nazwisko = kolumny[1],
+                            Studia = kolumny[2],
+                            Typ = kolumny[3],
+                            Index = kolumny[4],
+                            Data_urodzenia = kolumny[5],
+                            EMail = kolumny[6],
+                            ImieMatki = kolumny[7],
+                            ImieOjca = kolumny[8]
+                        };
+                        list.Add(st);
 
-                        }
+                        // usunac duplikaty
+                        // usunac wpisy z mniejsza iloscia kolumn niz 9
+                        // usunacc wpisy z pustymi kolumnami
 
-                        
-                        
+                        // jak to zrobic?
+                    
+
+
                         //int pos = Array.IndexOf(kolumny, null);
-
-
-
-
 
                         /*
                         if (kolumny.Length != 9)
@@ -92,7 +82,6 @@ namespace ConsoleApp2
                         else
                             list.Add(st);
                         */
-
 
                         /*
                         if (list.Contains((st))
@@ -138,8 +127,6 @@ namespace ConsoleApp2
                             list.Add(st);
                         } 
                         */
-
-
 
                     }
                     stream.Dispose();
