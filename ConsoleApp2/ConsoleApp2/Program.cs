@@ -10,14 +10,25 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
+            string csvpath;
+            string xmlpath;
+            string filetype;
 
-            string path = @"\Users\ger\cw2\apbd_cw2\ConsoleApp2\ConsoleApp2\Data\dane.csv";
-            //string path = @"Data\dane.csv";
-            Console.WriteLine("Hello World");
+            if (args.Length < 3)
+            {
+                csvpath = @"Data\dane.csv";
+                xmlpath = @"C:\Users\ger\Desktop\wynik.xml";
+                filetype = "xml";
+            } else
+            {
+                csvpath = args[0];
+                xmlpath = args[1];
+                filetype = args[2];
+            } 
 
-            //Wczytywanie 
-
-            var fi = new FileInfo(path);
+                        
+            //Wczytywanie csv
+            var fi = new FileInfo(csvpath);
             using (var stream = new StreamReader(fi.OpenRead()))
 
             {
@@ -41,7 +52,7 @@ namespace ConsoleApp2
             };
 
             list.Add(st);
-            FileStream writer = new FileStream(@"data.xml", FileMode.Create);
+            FileStream writer = new FileStream(xmlpath, FileMode.Create);
             XmlSerializer serializer = new XmlSerializer(typeof(List<Student>),
                                        new XmlRootAttribute("uczelnia"));
             serializer.Serialize(writer, list);
