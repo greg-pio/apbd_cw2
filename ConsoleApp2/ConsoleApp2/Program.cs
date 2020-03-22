@@ -8,21 +8,21 @@ namespace ConsoleApp2
 {
     class Program
     {
+        public static void Log(string logMessage, TextWriter w)
+        {
+            w.Write("\r\nLog Entry : ");
+            w.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+            w.WriteLine("  :");
+            w.WriteLine($"  :{logMessage}");
+            w.WriteLine("-------------------------------");
+        }
+
         static void Main(string[] args)
         {
             string csvpath;
             string xmlpath;
             string filetype;
-            string logpath = @"C:\Users\ger\Desktop\log.txt";
-            DateTime localDate = DateTime.Now;
-
-            if (!File.Exists(logpath))
-            {
-                using (StreamWriter sw = File.CreateText(logpath))
-                {
-                    sw.WriteLine("New log file created " + localDate);
-                }
-            }
+            string logpath = @"C:\Users\ger\Desktop\log.txt";           
 
             if (args.Length < 3)
             {
@@ -46,19 +46,101 @@ namespace ConsoleApp2
                     while ((line = stream.ReadLine()) != null)
                     {
                         string[] kolumny = line.Split(',');
-                        var st = new Student
+                        int pos = Array.IndexOf(kolumny, null);
+
+                        if (kolumny.Length != 9 || pos > -1)
                         {
-                            Imie = kolumny[0],
-                            Nazwisko = kolumny[1],
-                            Studia = kolumny[2],
-                            Typ = kolumny[3],
-                            Index = kolumny[4],
-                            Data_urodzenia = kolumny[5],
-                            EMail = kolumny[6],
-                            ImieMatki = kolumny[7],
-                            ImieOjca = kolumny[8]
-                        };                       
-                        list.Add(st);
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                Log("Blad. Pomijam studenta: " + kolumny[4], sw);
+                            }
+                        }
+                        else
+                        {
+                            var st = new Student
+                            {
+                                Imie = kolumny[0],
+                                Nazwisko = kolumny[1],
+                                Studia = kolumny[2],
+                                Typ = kolumny[3],
+                                Index = kolumny[4],
+                                Data_urodzenia = kolumny[5],
+                                EMail = kolumny[6],
+                                ImieMatki = kolumny[7],
+                                ImieOjca = kolumny[8]
+                            };
+                            list.Add(st);
+
+                        }
+
+                        
+                        
+                        //int pos = Array.IndexOf(kolumny, null);
+
+
+
+
+
+                        /*
+                        if (kolumny.Length != 9)
+                        {
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                Log("Za malo kolumn. Pomijam studenta: " + st.Index, sw);
+                            }
+                        }
+                        else
+                            list.Add(st);
+                        */
+
+
+                        /*
+                        if (list.Contains((st))
+                        {
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                Log("Test1", sw);
+                            }
+                        }
+                        else
+                            list.Add(st);
+                        */
+
+                        /*
+                        if (kolumny.Length < 9)
+                        {
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                sw.WriteLine("Za malo kolumn. Pomijam studenta: " + st.Index);
+                            }
+                        }
+                        else
+                            list.Add(st);
+                        */
+
+
+                        /*
+                        int pos = Array.IndexOf(kolumny, null);
+                        if (kolumny.Length < 9)
+                        {
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                sw.WriteLine("Za malo kolumn. Pomijam studenta: " + st.Index);
+                            }
+                        } else if (pos > -1)
+                        {
+                            using (StreamWriter sw = File.AppendText(logpath))
+                            {
+                                sw.WriteLine("Wystepuja puste pola. Pomijam studenta: " + st.Index);
+                            }
+                        } else
+                        {
+                            list.Add(st);
+                        } 
+                        */
+
+
+
                     }
                     stream.Dispose();
 
@@ -66,23 +148,20 @@ namespace ConsoleApp2
                     XmlSerializer serializer = new XmlSerializer(typeof(List<Student>),
                                                new XmlRootAttribute("uczelnia"));
                     serializer.Serialize(writer, list);
-                    //serializer.Serialize(writer, list);
                 }
             } catch (ArgumentException e)
             {
                 Console.WriteLine("Podana sciezka jest niepoprawna.");
                 using (StreamWriter sw = File.AppendText(logpath))
                 {
-                    sw.WriteLine("Podana sciezka jest niepoprawna.");
-                    sw.WriteLine(e);
+                    Log("Podana sciezka jest niepoprawna.", sw);
                 }
             } catch (FileNotFoundException f)
             {
                 Console.WriteLine("Plik nie istnieje");
                 using (StreamWriter sw = File.AppendText(logpath))
                 {
-                    sw.WriteLine("Plik nie istnieje");
-                    sw.WriteLine(f);
+                    Log("Plik nie istnieje.", sw);
                 }
             }
         }
